@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import routesAlumno from '../routes/alumno';
+import db from '../db/connection';
 
 class Server {
 
@@ -12,11 +13,12 @@ class Server {
         this.listen();
         this.middlewares();
         this.routes();
+        this.dbConnect();
     }
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`App running at port ${this.port}`)
+            console.log(`App running at port>${this.port}`)
         })
     }
 
@@ -32,6 +34,18 @@ class Server {
     middlewares() {
         //Body parsing
         this.app.use(express.json());
+    }
+
+    async dbConnect() {
+        try {
+            await db.authenticate();
+            console.log('Database connection>Success');
+        } catch (error) {
+            console.log('Database connection>Fail');
+            console.log(error);
+        }
+
+
     }
 }
 
