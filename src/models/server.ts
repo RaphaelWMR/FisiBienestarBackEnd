@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import routesAlumno from '../routes/alumno';
 
 class Server {
 
@@ -9,6 +10,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '3001';
         this.listen();
+        this.middlewares();
         this.routes();
     }
 
@@ -24,7 +26,12 @@ class Server {
                 msg: 'API Working'
             });
         });
-        /*this.app.use('api/users');*/
+        this.app.use('/api/alumnos', routesAlumno);
+    }
+
+    middlewares() {
+        //Body parsing
+        this.app.use(express.json());
     }
 }
 
