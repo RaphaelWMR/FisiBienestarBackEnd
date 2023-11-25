@@ -1,17 +1,25 @@
 import { Request, Response } from 'express';
+import Alumno from '../models/alumno';
 
-export const getAlumnos = (req: Request, res: Response) => {
+export const getAlumnos = async (req: Request, res: Response) => {
+    const listAlumnos = await Alumno.findAll();
+
     res.json({
-        msg: "get Alumnos"
+        listAlumnos
     })
 }
 
-export const getAlumno = (req: Request, res: Response) => {
+export const getAlumno = async (req: Request, res: Response) => {
     const { id } = req.params;
-    res.json({
-        msg: "get Alumnos",
-        id
-    })
+    const alumno = await Alumno.findByPk(id);
+
+    if (alumno) {
+        res.json(alumno);
+    } else {
+        res.status(404).json({
+            msg: `App>Alumno with id ${id} doesn't exist`
+        });
+    }
 }
 
 export const deleteAlumno = (req: Request, res: Response) => {
